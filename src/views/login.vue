@@ -36,21 +36,21 @@ export default{
 	},
 	methods:{
 		login(){
-			if(this.account=="17764592436"&&this.password=="123456"){
+			if(this.account=="123456"&&this.password=="123456"){
 				this.$router.push({path:'/addBook'});
 				this.$notify({
-	        title: '成功',
-	        message: '登录成功！',
-	        type: 'success',
-	        duration:'2000'
-	      })
+					title: '成功',
+					message: '登录成功！',
+					type: 'success',
+					duration:'2000'
+				})
 			}else{
 				this.$notify({
-	        title: '失败',
-	        message: '用户名或密码错误！',
-	        type: 'error',
-	        duration:'2000'
-	      })
+					title: '失败',
+					message: '用户名或密码错误！',
+					type: 'error',
+					duration:'2000'
+				})
 			}
 		}
 	}

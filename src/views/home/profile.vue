@@ -97,5 +97,6 @@
 <style>
 .profile{
     width: 800px;
+    padding: 32px;
 }
 </style>

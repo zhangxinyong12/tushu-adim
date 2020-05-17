@@ -76,7 +76,6 @@ export default{
     },
 		refreshTable(){
 			let tableNew = JSON.parse(localStorage.getItem('bookInfo'));
-			console.log('tableNew:'+tableNew);
 			if(tableNew == null){
 				return false;
 			}else{
@@ -102,7 +101,7 @@ export default{
 }
 </script>
 
-<style>
+<style >
 .allBook{
 	.box{
 		width: 100%;

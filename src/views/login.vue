@@ -36,7 +36,28 @@ export default{
 	},
 	methods:{
 		login(){
-			if(this.account=="123456"&&this.password=="123456"){
+			let user = JSON.parse(localStorage.getItem("user"))
+			
+			if(user){
+				let name = user.name;
+				let pwd = user.pass
+				if(this.account == name && this.password == pwd){
+					this.$router.push({path:'/addBook'});
+					this.$notify({
+						title: '成功',
+						message: '登录成功！',
+						type: 'success',
+						duration:'2000'
+					})
+				}else{
+					this.$notify({
+						title: '失败',
+						message: '用户名或密码错误！',
+						type: 'error',
+						duration:'2000'
+					})
+				}
+			}else if(this.account=="123456"&&this.password=="123456"){
 				this.$router.push({path:'/addBook'});
 				this.$notify({
 					title: '成功',

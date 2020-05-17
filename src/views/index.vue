@@ -50,6 +50,7 @@ export default {
     .rightContent{
       width:100%;
       min-width:1230px;
+      overflow-x: auto;
       position: relative;
       left: 170px;
       padding-right: 170px;

@@ -29,6 +29,12 @@ export default new Router({
           },
         },
         {
+          path: '/stateBook',
+          component: function(resolve){
+            require(['../views/home/stateBook.vue'],resolve);
+          },
+        },
+        {
           path: '/technologyBook',
           component: function(resolve){
             require(['../views/home/technologyBook.vue'],resolve);
@@ -59,10 +65,19 @@ export default new Router({
           },
         },
         {
+          path: '/profile',
+          component: function(resolve){
+            require(['../views/home/profile.vue'],resolve);
+          },
+        },
+        {
           path: '/classStatistic',
           component: function(resolve){
             require(['../views/home/classStatistic.vue'],resolve);
           },
+         
+           
+          
         }
       ]
     },

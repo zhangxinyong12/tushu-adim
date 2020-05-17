@@ -6,7 +6,7 @@
     </div>
     <div class="loginOut">
       <i class="iconfont icon-yonghu user"></i>
-      {{tel}}
+      {{userName}}
       <button @click="signOut">
         <i class="iconfont icon-tuichu"></i>
         退出
@@ -19,12 +19,20 @@
 export default {
   data () {
     return {
-     tel:'17764592436',
+     name:'',
+    }
+  },
+  mounted(){
+  
+  },
+  computed : {
+    userName () {
+      return  this.name = this.$store.state.name
     }
   },
   methods:{
     signOut(){
-      localStorage.clear();
+      // localStorage.clear();
       this.$router.push({'path':"/"});
     }
   }

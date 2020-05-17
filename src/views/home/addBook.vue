@@ -17,6 +17,9 @@
 			    	<template slot-scope="scope">
 			        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
 			        <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+			        <el-button size="mini"  @click="setstate(scope.$index, scope.row)" v-if="scope.row.state == '可借阅'">借阅</el-button>
+			        <el-button size="mini"  @click="haunstate(scope.$index, scope.row)" v-else-if="scope.row.state == '已借阅'">还书</el-button>
+
 			      </template>
 			    </el-table-column>
 			  </el-table>
@@ -127,6 +130,36 @@
 		  <span slot="footer" class="dialog-footer">
 		    <el-button @click="dialogVisible2 = false">取 消</el-button>
 		    <el-button type="primary" @click="eidtSure()">确 定</el-button>
+		  </span>
+		</el-dialog>
+		<!-- 借阅弹窗 -->
+	<el-dialog title="借阅图书" :visible.sync="dialogVisible3" width="620px" center>
+		  <div class="line">
+		  	<div class="block">
+		  		<span>图书编号：</span>
+		  		<el-input v-model="jieParam.bookid" placeholder="请输入图书编号"></el-input>
+		  	</div>
+		  	<div class="block">
+		  		<span>书&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span>
+		  		<el-input v-model="jieParam.bookname" placeholder="请输入书名"></el-input>
+		  	</div>
+		  </div>
+		 
+		  <div class="line">
+		  
+		  	<div class="block">
+		  		<span>借阅时间：</span>
+		  		<el-date-picker
+		  		  v-model="jieParam.booktime"
+		  		  type="date"
+		  		  placeholder="选择日期"
+		  		  value-format="yyyy-MM-dd"
+		  		  ></el-date-picker>
+		  	</div>
+		  </div>
+		  <span slot="footer" class="dialog-footer">
+		    <el-button @click="dialogVisible = false">取 消</el-button>
+		    <el-button type="primary" @click="stateSure()">确 定</el-button>
 		  </span>
 		</el-dialog>
 	</div>
@@ -243,6 +276,7 @@ export default{
 			],
 			dialogVisible:false,
 			dialogVisible2:false,
+			dialogVisible3:false,
 			bookTypes:[
 				{
 					value:'文学类',
@@ -273,6 +307,14 @@ export default{
 				bookpress:'',
 				booktime:'',
 			},
+			jieParam:{
+				bookid:'',
+				bookname:'',
+				bookactor:'',
+				booktype:'',
+				bookpress:'',
+				booktime:'',
+			},
 			xiabiao:'',
 			totalNum:11,
 			paging:{
@@ -283,6 +325,7 @@ export default{
 	},
 	mounted(){
 		this.refreshTable();
+		localStorage.setItem('bookInfo',JSON.stringify(this.tableData))
 	},
 	methods:{
 		//分页
@@ -291,26 +334,23 @@ export default{
 			this.paging.page = val;
 		},
 		handleSizeChange(size) {
-      this.paging.size = size;
-    },
+			this.paging.size = size;
+		},
 		//编辑按钮
 		handleEdit(index, row) {
-      console.log(index, row);
-      this.dialogVisible2 = true;
-
+			this.dialogVisible2 = true;
 			this.addParam.bookid = row.id;
 			this.addParam.bookname = row.name;
 			this.addParam.bookactor = row.actor;
 			this.addParam.booktype = row.type;
 			this.addParam.bookpress = row.press;
 			this.addParam.booktime = row.time;
-
 			this.xiabiao = Number((this.paging.page-1)*this.paging.size + index);
-    },
-    //编辑确定按钮
-    eidtSure(){
-    	let s = {};
-      s.id = this.addParam.bookid;
+		},
+		//编辑确定按钮
+		eidtSure(){
+			let s = {};
+			s.id = this.addParam.bookid;
 			s.name = this.addParam.bookname;
 			s.actor = this.addParam.bookactor;
 			s.type = this.addParam.booktype;
@@ -322,32 +362,66 @@ export default{
 			localStorage.setItem('bookInfo',JSON.stringify(this.tableData));
 			this.dialogVisible2 = false;
 			this.$notify({
-        title: '成功',
-        message: '编辑图书信息成功！',
-        type: 'success',
-        duration:'1500'
-      })
-      this.refreshTable();
-    },
-    //删除按钮
-    handleDelete(index, row) {
-      //console.log(index, row);
-      let ind = (this.paging.page-1)*this.paging.size + index;
-      //console.log("ind:"+ind)
-      this.tableData.splice(ind,1);
-      localStorage.setItem('bookInfo',JSON.stringify(this.tableData));
-      this.$notify({
-        title: '成功',
-        message: '删除图书信息成功！',
-        type: 'success',
-        duration:'1500'
-      })
-       this.refreshTable();
-    },
-    //添加按钮
+				title: '成功',
+				message: '编辑图书信息成功！',
+				type: 'success',
+				duration:'1500'
+			});
+			this.refreshTable();
+		},
+		// 借阅按钮
+		setstate(index,row){
+			console.log(row)
+			this.dialogVisible3 = true;
+			this.jieParam.bookid = row.id;
+			this.jieParam.bookname = row.name;
+			this.jieParam.bookactor = row.actor;
+			this.jieParam.booktype = row.type;
+			this.jieParam.bookpress = row.press;
+			this.jieParam.booktime = row.time;
+			this.jieParam.state = "已借阅";
+			this.xiabiao = Number((this.paging.page-1)*this.paging.size + index);
+
+		},
+		// 借阅确定按钮
+		stateSure(){
+			let s = {};
+			s.id = this.jieParam.bookid;
+			s.name = this.jieParam.bookname;
+			s.actor = this.jieParam.bookactor;
+			s.type = this.jieParam.booktype;
+			s.press = this.jieParam.bookpress;
+			s.time = this.jieParam.booktime;
+			s.state = '已借阅';
+
+			this.tableData.splice(this.xiabiao,1,s);
+			localStorage.setItem('bookInfo',JSON.stringify(this.tableData));
+			this.dialogVisible3 = false;
+			this.$notify({
+				title: '成功',
+				message: '借阅图书成功！',
+				type: 'success',
+				duration:'1500'
+			});
+		this.refreshTable();
+		},
+		//删除按钮
+		handleDelete(index, row) {
+			let ind = (this.paging.page-1)*this.paging.size + index;
+			this.tableData.splice(ind,1);
+			localStorage.setItem('bookInfo',JSON.stringify(this.tableData));
+			this.$notify({
+				title: '成功',
+				message: '删除图书信息成功！',
+				type: 'success',
+				duration:'1500'
+			})
+			this.refreshTable();
+		},
+		
+    	//添加按钮
 		addBook(){
 			this.dialogVisible = true;
-			//localStorage.removeItem("bookInfo");
 			this.addParam.bookid = '';
 			this.addParam.bookname = '';
 			this.addParam.bookactor = '';
@@ -359,22 +433,13 @@ export default{
 		addSure(){
 			if(this.addParam.bookid==''||this.addParam.bookname==''||this.addParam.bookactor==''||this.addParam.booktype==''||this.addParam.bookpress==''||this.addParam.booktime==''){
 				this.$notify({
-          title: '图书信息不完整',
-          message: '请完整填写图书录入信息',
-          type: 'warning',
-          duration:'1500'
-        })
-        return false;
+					title: '图书信息不完整',
+					message: '请完整填写图书录入信息',
+					type: 'warning',
+					duration:'1500'
+				})
+       			return false;
 			}
-			/*console.group('图书信息');
-			console.log('bookid:'+this.addParam.bookid);
-			console.log('bookname:'+this.addParam.bookname);
-			console.log('bookactor:'+this.addParam.bookactor);
-			console.log('booktype:'+this.addParam.booktype);
-			console.log('bookpress:'+this.addParam.bookpress);
-			console.log('booktime:'+this.addParam.booktime);
-			console.groupEnd();*/
-			//console.log('booktime:'+this.addParam.booktime);
 			let s = {};
 			s.id = this.addParam.bookid;
 			s.name = this.addParam.bookname;
@@ -391,13 +456,13 @@ export default{
 			//console.log(this.tableData)
 			this.dialogVisible = false;
 			this.$notify({
-        title: '图书录入成功！',
-        message: 'OK！',
-        type: 'success',
-        duration:'1500'
-      })
-      this.refreshTable();
-		},
+				title: '图书录入成功！',
+				message: 'OK！',
+				type: 'success',
+				duration:'1500'
+			})
+			this.refreshTable();
+			},
 		getAjax(){
 			ajax(this,this.extendApi.Data,'',(res)=>{
 				this.resData =  eval('(' + res + ')');

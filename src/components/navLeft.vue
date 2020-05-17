@@ -17,6 +17,8 @@
         <el-menu-item-group>
           <el-menu-item index="/addBook"><span>添加图书</span></el-menu-item>
           <el-menu-item index="/allBook"><span>所有图书</span></el-menu-item>
+          <el-menu-item index="/stateBook"><span>借阅图书</span></el-menu-item>
+
         </el-menu-item-group>
       </el-submenu>
       <el-submenu index="2">
@@ -47,7 +49,7 @@
           <span>账户管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="/"><span>账户管理</span></el-menu-item>
+          <el-menu-item index="/profile"><span>账户管理</span></el-menu-item>
         </el-menu-item-group>
       </el-submenu>
     </el-menu>

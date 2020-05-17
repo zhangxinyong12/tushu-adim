@@ -24,7 +24,7 @@ export default {
   },
   methods:{
     signOut(){
-      sessionStorage.clear();
+      localStorage.clear();
       this.$router.push({'path':"/"});
     }
   }

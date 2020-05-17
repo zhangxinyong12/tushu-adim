@@ -319,7 +319,7 @@ export default{
 			s.state = '可借阅';
 
 			this.tableData.splice(this.xiabiao,1,s);
-			sessionStorage.setItem('bookInfo',JSON.stringify(this.tableData));
+			localStorage.setItem('bookInfo',JSON.stringify(this.tableData));
 			this.dialogVisible2 = false;
 			this.$notify({
         title: '成功',
@@ -335,7 +335,7 @@ export default{
       let ind = (this.paging.page-1)*this.paging.size + index;
       //console.log("ind:"+ind)
       this.tableData.splice(ind,1);
-      sessionStorage.setItem('bookInfo',JSON.stringify(this.tableData));
+      localStorage.setItem('bookInfo',JSON.stringify(this.tableData));
       this.$notify({
         title: '成功',
         message: '删除图书信息成功！',
@@ -347,7 +347,7 @@ export default{
     //添加按钮
 		addBook(){
 			this.dialogVisible = true;
-			//sessionStorage.removeItem("bookInfo");
+			//localStorage.removeItem("bookInfo");
 			this.addParam.bookid = '';
 			this.addParam.bookname = '';
 			this.addParam.bookactor = '';
@@ -386,7 +386,7 @@ export default{
 
 			this.tableData.push(s);
 
-			sessionStorage.setItem('bookInfo',JSON.stringify(this.tableData));//将table数据存储在sessionStorage中
+			localStorage.setItem('bookInfo',JSON.stringify(this.tableData));//将table数据存储在localStorage中
 			//Bus.$emit('data',JSON.stringify(this.tableData));
 			//console.log(this.tableData)
 			this.dialogVisible = false;
@@ -406,7 +406,7 @@ export default{
 			},"GET")
 		},
 		refreshTable(){
-			let tableNew = JSON.parse(sessionStorage.getItem('bookInfo'));
+			let tableNew = JSON.parse(localStorage.getItem('bookInfo'));
 			//console.log('tableNew:'+tableNew);
 			if(tableNew == null){
 				return false;

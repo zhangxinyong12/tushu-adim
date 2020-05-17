@@ -57,8 +57,8 @@ var delatecookie=function(){//清空cookie
 }
 /* ajax请求 */
 var ajax = function(that, url, params, success, method) {
-  var token = sessionStorage.getItem('token');
-  var uid=sessionStorage.getItem("userid");
+  var token = localStorage.getItem('token');
+  var uid=localStorage.getItem("userid");
   if(method=='GET'){
     that.axios({
       method: 'get',

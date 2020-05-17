@@ -120,7 +120,7 @@ export default{
 			})
 		},
 		getClassNumber(){
-			let tableNew = JSON.parse(sessionStorage.getItem('bookInfo'));
+			let tableNew = JSON.parse(localStorage.getItem('bookInfo'));
 			//console.log('tableNew:'+tableNew);
 			if(tableNew == null){
 				return false;
